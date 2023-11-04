@@ -76,30 +76,73 @@ class MainActivity : ComponentActivity() {
                     style = LocalTextStyle.current.copy(lineHeight = 50.sp)
                 )
 
-                Button(onClick = {//checked
+                Button(onClick = {//check
+                    baseList.get(id).complete = "X"
                     if(baseList.get(id).unitNum == baseList.get(id+1).unitNum){
-                        baseList.get(id).complete = "X"
-                        id = id + 1}
-
+                        id = id + 1
+                    }
                     },
                     modifier = Modifier.padding(20.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
                 ) {
-                    Text(text = "Check", fontSize = 50.sp)
+                    Text(text = "Check + go to next", fontSize = 30.sp)
+                }
+
+                Button(onClick = {//check
+                    baseList.get(id).complete = "X"
+                    if(baseList.get(id).unitNum == baseList.get(id+1).unitNum){
+                        id = id + 1
+                        id = id -1
+                    } else {
+                        id = id - 1
+                        id = id + 1
+                    }
+                },
+                    modifier = Modifier.padding(5.dp)
+                ) {
+                    Text(text = "Check", fontSize = 20.sp)
                 }
 
                 Button(onClick = {//uncheck
-                    },
-                    modifier = Modifier.padding(10.dp)
+                    baseList.get(id).complete = ""
+                    if(baseList.get(id).unitNum == baseList.get(id+1).unitNum){
+                        id = id + 1
+                        id = id -1
+                    } else {
+                        id = id - 1
+                        id = id + 1
+                    }
+                },
+                    modifier = Modifier.padding(5.dp)
                 ) {
                     Text(text = "Uncheck", fontSize = 20.sp)
+                }
+
+                Button(onClick = {//go to previous
+                    if(baseList.get(id).unitNum == baseList.get(id - 1).unitNum) {
+                        id = id - 1
+                    }
+                    },
+                    modifier = Modifier.padding(5.dp)
+                ) {
+                    Text(text = "Go to previous", fontSize = 20.sp)
+                }
+
+                Button(onClick = {//go to next
+                    if(baseList.get(id).unitNum == baseList.get(id + 1).unitNum) {
+                        id = id + 1
+                    }
+                },
+                    modifier = Modifier.padding(5.dp)
+                ) {
+                    Text(text = "Go to next", fontSize = 20.sp)
                 }
 
                 Button(onClick = {//go to building
                     val navigate = Intent(this@MainActivity, MainActivity2::class.java)
                     startActivity(navigate)
                 },
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(5.dp)
                 ) {
                     Text(text = "Go to building", fontSize = 20.sp)
                 }
