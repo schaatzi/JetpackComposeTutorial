@@ -17,6 +17,7 @@ open class ParentTask (
 ){
     var taskId: Int = 0
     var needSub: String = "  "
+    var notes: String = ""
     var complete: String = "  "
 
 }

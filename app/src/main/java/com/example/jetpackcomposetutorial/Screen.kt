@@ -1,7 +1,8 @@
 package com.example.jetpackcomposetutorial
 
 sealed class Screen (val route: String){
-    object MainScreen: Screen("main_screen")
-    object Unit101: Screen("unit_101")
+    object Home: Screen(route = "home_screen")
+    object Detail: Screen(route = "detail_screen")
+    object All: Screen(route = "all_screen")
 
 }

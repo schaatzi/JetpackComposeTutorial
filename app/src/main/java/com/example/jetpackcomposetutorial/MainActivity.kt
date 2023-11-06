@@ -39,152 +39,32 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.jetpackcomposetutorial.ui.theme.JetpackComposeTutorialTheme
 
 
-
+val viewModel = ContactsViewModel()
 
 class MainActivity : ComponentActivity() {
+
+    lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        CreateAllTasks()
 
 
 
         setContent {
 
-            val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "MainScreen"){
-                composable(route = "MainScreen"){
-                    MainScreen(navController)
-                }
-                composable(route = "DetailScreen"){
+            navController = rememberNavController()
+            SetupNavGraph(navController = navController)
+            
+            //HomeScreen(navController = navController)
 
-                }
-
-
-            }
-
-            CreateAllTasks()
-
-            var id by remember {
-                mutableStateOf(1)
-            }
-            var currentUnit by remember {
-                mutableStateOf(listOfEveryTask.get(id).unitNum)
-            }
-
-            Column (
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.End,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp)
-            ){
-                Text(//previous task text
-                    text = "[ ${listOfEveryTask.get(id - 1).complete} ] ${listOfEveryTask.get(id - 1).details}",
-                    fontSize = 15.sp,
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(20.dp),
-                    style = LocalTextStyle.current.copy(lineHeight = 25.sp)
-                )
-
-                Text(//current task text//////////////////////////////////////////////////////////
-                    text = "[ ${listOfEveryTask.get(id).complete} ]  ${listOfEveryTask.get(id).details}",
-                    fontSize = 30.sp,
-                    modifier = Modifier.align(Alignment.Start),
-                    style = LocalTextStyle.current.copy(lineHeight = 50.sp)
-                )////////////////////////////////////////////////////////////////////////////////////
-
-                Button(onClick = {//check and go to next
-                    listOfEveryTask.get(id).complete = "X"
-                    if(listOfEveryTask.get(id).unitNum == listOfEveryTask.get(id+1).unitNum){
-                        id = id + 1
-                    }
-                    },
-                    modifier = Modifier.padding(20.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
-                ) {
-                    Text(text = "Check + go to next", fontSize = 30.sp)
-                }
-
-                Button(onClick = {//check
-                    listOfEveryTask.get(id).complete = "X"
-                    if(listOfEveryTask.get(id).unitNum == listOfEveryTask.get(id+1).unitNum){
-                        id = id + 1
-                        id = id -1
-                    } else {
-                        id = id - 1
-                        id = id + 1
-                    }
-                },
-                    modifier = Modifier.padding(5.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
-                ) {
-                    Text(text = "Check   [X]", fontSize = 20.sp)
-                }
-
-                Button(onClick = {//uncheck
-                    listOfEveryTask.get(id).complete = "  "
-                    if(listOfEveryTask.get(id).unitNum == listOfEveryTask.get(id+1).unitNum){
-                        id = id + 1
-                        id = id -1
-                    } else {
-                        id = id - 1
-                        id = id + 1
-                    }
-                },
-                    modifier = Modifier.padding(5.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
-                ) {
-                    Text(text = "Uncheck   [ ]", fontSize = 20.sp)
-                }
-
-                Button(onClick = {//go to previous
-                    if(listOfEveryTask.get(id).unitNum == listOfEveryTask.get(id - 1).unitNum && id > 1) {
-                        id = id - 1
-                    }
-                    },
-                    modifier = Modifier.padding(5.dp)
-                ) {
-                    Text(text = "Go to previous    ^", fontSize = 20.sp)
-                }
-
-                Button(onClick = {//go to next
-                    if(listOfEveryTask.get(id).unitNum == listOfEveryTask.get(id + 1).unitNum) {
-                        id = id + 1
-                    }
-
-                },
-                    modifier = Modifier.padding(5.dp)
-                ) {
-                    Text(text = "Go to next    v", fontSize = 20.sp)
-                }
-
-                Button(onClick = {//go to list
-                    val navigate = Intent(this@MainActivity, MainActivity2::class.java)
-                    startActivity(navigate)
-                },
-                    modifier = Modifier.padding(5.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Magenta)
-                ) {
-                    Text(text = "Go to list    <", fontSize = 20.sp)
-                }
-
-                Text(
-                    text = "Unit: ${TranslateUnitNumber(listOfEveryTask.get(id).unitNum)}  id: $id   total count: ${listOfEveryTask.count()}",
-                    fontSize = 30.sp,
-                    modifier = Modifier.align(Alignment.Start)
-                )
-
-
-
-
-
-            }
             /*
             JetpackComposeTutorialTheme {
                 // A surface container using the 'background' color from the theme
@@ -202,6 +82,7 @@ class MainActivity : ComponentActivity() {
 
 }
 
+/*
 @Composable
 fun Home(){
     var count by remember {
@@ -243,14 +124,8 @@ fun Home(){
 
     }
 }
+*/
 
 
 
-@Preview(showBackground = true)         //text under @Preview will show up on the right after clicking on Split view
-@Composable
-fun GreetingPreview() {                 //use the GreetingPreview function to put things in that we want to see?
-    JetpackComposeTutorialTheme {       //naming GreetingPreview to something else doesnt create errors though?
-        Greeting("Andro")
-        Home()
-    }
-}
+
