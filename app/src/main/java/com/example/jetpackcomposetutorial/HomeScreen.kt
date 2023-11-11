@@ -49,18 +49,13 @@ fun HomeScreen(
 ) {
 
 
-
-    var currentUnit by remember {
-        mutableStateOf(listOfEveryTask.get(viewModel.id).unitNum)
-    }
-
     var text by remember {
         mutableStateOf("")
     }
 
     var tasksPerUnit = listOfEveryTask.count()/36
 
-    val context = LocalContext.current
+    val context = LocalContext.current  //used by toast
 
 
     Column (
@@ -76,9 +71,9 @@ fun HomeScreen(
             navController.navigate(route = Screen.All.route)
         },
             //modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
         ) {
-            Text(text = "See all units    <", fontSize = 20.sp)
+            Text(text = "See all units    >", fontSize = 20.sp)
         }
 
         Button(onClick = {//go to list
@@ -86,15 +81,17 @@ fun HomeScreen(
             navController.navigate(route = Screen.Detail.route)
         },
             //modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
         ) {
-            Text(text = "See whole list    <", fontSize = 20.sp)
+            Text(text = "See whole list    >", fontSize = 20.sp)
         }
 
         Text(
             text = "Unit: ${TranslateUnitNumber(listOfEveryTask.get(viewModel.id).unitNum)}  id: ${viewModel.id} / ${listOfEveryTask.count()}",
             fontSize = 40.sp,
-            modifier = Modifier.align(Alignment.Start)
+            modifier = Modifier
+                .padding(15.dp)
+                .align(Alignment.Start)
         )
 
 

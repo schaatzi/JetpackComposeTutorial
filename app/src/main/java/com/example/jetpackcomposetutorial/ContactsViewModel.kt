@@ -9,7 +9,7 @@ class ContactsViewModel: ViewModel() {
 
     var id by mutableStateOf(1)
 
-    var currentUnit by mutableStateOf(1)
+    //var currentUnit by mutableStateOf(1)
 
 
     fun incrementId(){

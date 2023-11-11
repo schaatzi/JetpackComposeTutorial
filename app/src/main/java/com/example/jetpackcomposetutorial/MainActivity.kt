@@ -1,8 +1,10 @@
+//firebase id: checklist-c3fd0
 package com.example.jetpackcomposetutorial
 
 import android.content.Intent
 //import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -44,41 +46,42 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.jetpackcomposetutorial.ui.theme.JetpackComposeTutorialTheme
+import com.google.firebase.Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.database
 
 
 val viewModel = ContactsViewModel()
+val listOfEveryTask = mutableListOf<BabyTask>()
+
+var databaseGet = FirebaseDatabase.getInstance().reference
+var database = Firebase.database
 
 class MainActivity : ComponentActivity() {
+
 
     lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        CreateAllTasks()
-
+        //ResetAllAppTasks()
+        //WriteAllToDatabase()
 
 
         setContent {
 
+            PullAllFromDatabase()
+
             navController = rememberNavController()
             SetupNavGraph(navController = navController)
-            
-            //HomeScreen(navController = navController)
 
-            /*
-            JetpackComposeTutorialTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                    Home()
-                }
-            }
-            */
         }
     }
+
 
 }
 

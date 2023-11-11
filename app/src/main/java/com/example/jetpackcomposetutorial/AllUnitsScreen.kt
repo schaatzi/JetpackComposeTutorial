@@ -26,6 +26,7 @@ fun AllUnitsScreen(
     val scrollState = rememberScrollState()
 
     Column (
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .verticalScroll(scrollState)
             .fillMaxSize()
@@ -37,10 +38,10 @@ fun AllUnitsScreen(
             viewModel.id = (listOfEveryTask.count()/36)*(i-1)+1
             navController.navigate(route = Screen.Home.route)
         },
-            //modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+            modifier = Modifier.padding(10.dp),
+            //colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
         ) {
-            Text(text = "${TranslateUnitNumber(i)}", fontSize = 20.sp)
+            Text(text = "${TranslateUnitNumber(i)}", fontSize = 30.sp)
         }
 
     }

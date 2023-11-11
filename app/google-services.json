@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "90078879145",
+    "project_id": "checklist-c3fd0",
+    "storage_bucket": "checklist-c3fd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90078879145:android:5b551090aad2f10c7338b8",
+        "android_client_info": {
+          "package_name": "com.example.jetpackcomposetutorial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLwyV-VANpQLMRK95b2PKFgrrvtM8PJAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
