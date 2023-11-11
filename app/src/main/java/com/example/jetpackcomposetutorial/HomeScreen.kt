@@ -57,7 +57,19 @@ fun HomeScreen(
 
     val context = LocalContext.current  //used by toast
 
-
+    viewModel.incrementId()
+    viewModel.decrementId()
+/*
+    val twoThirdsOfCount = listOfEveryTask.count()*(2/3)
+    for (i in 1..twoThirdsOfCount){
+        listOfEveryTask.removeAt(i-1)
+    }
+*/
+    println("home screen item count is: ${listOfEveryTask.count()}")    // this prints repeatedly at 972
+    if(listOfEveryTask.count() > 324) {
+        println("the last item's notes are: ${listOfEveryTask.get(971).notes}") //this entry is blank
+        println("item number 325's notes are: ${listOfEveryTask.get(324).notes}") //this entry is blank
+    }
     Column (
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.End,

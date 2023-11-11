@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.NavHost
@@ -63,21 +64,25 @@ var database = Firebase.database
 
 class MainActivity : ComponentActivity() {
 
-
     lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //ResetAllAppTasks()
+        ResetAllAppTasks()      //adding this avoids crashing but makes the task count too high
         //WriteAllToDatabase()
+        PullAllFromDatabase()
+
+        println("main activity list count equals: ${listOfEveryTask.count()}") //324
+        //println("notes of first item is: ${listOfEveryTask.get(0).notes}")
+
 
 
         setContent {
 
-            PullAllFromDatabase()
-
             navController = rememberNavController()
             SetupNavGraph(navController = navController)
+
+
 
         }
     }

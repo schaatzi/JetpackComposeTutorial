@@ -12,11 +12,11 @@ fun PullAllFromDatabase(){
                 listOfEveryTask.add(BabyTask(i.child("unitNum").getValue().toString().toInt(), i.child("details").getValue().toString()))
                 var printable = i.child("unitNum").getValue().toString()
                 var printable2 = i.child("details").getValue().toString()
-                //println("details: $printable $printable2")
+                println("details: $printable $printable2")  //matches database
             }
 
             for (i in 1..listOfEveryTask.count()){
-                println("loet: ${listOfEveryTask.get(i-1).unitNum} ${listOfEveryTask.get(i-1).details}")
+                println("loet: ${listOfEveryTask.get(i-1).unitNum} ${listOfEveryTask.get(i-1).details}")    //matches the entry from ResetAllAppTasks and not the database
             }
 
         }
