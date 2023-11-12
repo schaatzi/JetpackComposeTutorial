@@ -68,12 +68,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ResetAllAppTasks()      //adding this avoids crashing but makes the task count too high
+        ResetAllAppTasks()
         //WriteAllToDatabase()
-        PullAllFromDatabase()
+        InitialPull()
 
         println("main activity list count equals: ${listOfEveryTask.count()}") //324
-        //println("notes of first item is: ${listOfEveryTask.get(0).notes}")
+
 
 
 

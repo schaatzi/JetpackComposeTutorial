@@ -3,8 +3,10 @@ package com.example.jetpackcomposetutorial
 fun ResetAllAppTasks(){
 
 
+
+
     for (i in 1..36){
-        listOfEveryTask.add(BabyTask(i, "(unit list start)"))
+        listOfEveryTask.add(BabyTask(i, "(this task is not from firebase)"))
         listOfEveryTask.add(BabyTask(i, "sink (stopper works) [far bath]"))
         listOfEveryTask.add(BabyTask(i, "sink (both waters work) [far bath]"))
         listOfEveryTask.add(BabyTask(i, "tub (water works) [far bath]"))

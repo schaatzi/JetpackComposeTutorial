@@ -59,17 +59,12 @@ fun HomeScreen(
 
     viewModel.incrementId()
     viewModel.decrementId()
-/*
-    val twoThirdsOfCount = listOfEveryTask.count()*(2/3)
-    for (i in 1..twoThirdsOfCount){
-        listOfEveryTask.removeAt(i-1)
-    }
-*/
-    println("home screen item count is: ${listOfEveryTask.count()}")    // this prints repeatedly at 972
-    if(listOfEveryTask.count() > 324) {
-        println("the last item's notes are: ${listOfEveryTask.get(971).notes}") //this entry is blank
-        println("item number 325's notes are: ${listOfEveryTask.get(324).notes}") //this entry is blank
-    }
+
+
+    println("this is the home screen before the first composable. tasksPerUnit: $tasksPerUnit")
+
+
+
     Column (
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.End,
@@ -150,16 +145,16 @@ fun HomeScreen(
                 onDone = {
                     if (text != ""){
                         if (text == "del"){
-                            listOfEveryTask.get(viewModel.id).notes = ""
+                            //listOfEveryTask.get(viewModel.id).notes = ""
+                            pushTask("notes","")
                             viewModel.incrementId()
                             viewModel.decrementId()
                         } else {
-                            listOfEveryTask.get(viewModel.id).notes = text.uppercase()
+                            //listOfEveryTask.get(viewModel.id).notes = text.uppercase()
+                            pushTask("notes",text.uppercase())
                             viewModel.incrementId()
                             viewModel.decrementId()
-                            if (listOfEveryTask.get(viewModel.id).unitNum == listOfEveryTask.get(
-                                    viewModel.id + 1
-                                ).unitNum
+                            if (listOfEveryTask.get(viewModel.id).unitNum == listOfEveryTask.get(viewModel.id + 1).unitNum
                             ) {
                                 viewModel.incrementId()
                             }
@@ -174,7 +169,8 @@ fun HomeScreen(
 
 
         Button(onClick = {//check and go to next
-            listOfEveryTask.get(viewModel.id).complete = "X"
+            //listOfEveryTask.get(viewModel.id).complete = "X"
+            pushTask("complete","X")
             if(listOfEveryTask.get(viewModel.id).unitNum == listOfEveryTask.get(viewModel.id+1).unitNum){
                 viewModel.incrementId()
             }else {
@@ -192,7 +188,8 @@ fun HomeScreen(
         }
 
         Button(onClick = {//N/A and go to next
-            listOfEveryTask.get(viewModel.id).complete = "N/A"
+            //listOfEveryTask.get(viewModel.id).complete = "N/A"
+            pushTask("complete", "N/A")
             if(listOfEveryTask.get(viewModel.id).unitNum == listOfEveryTask.get(viewModel.id+1).unitNum){
                 viewModel.incrementId()
             }else {
@@ -210,7 +207,8 @@ fun HomeScreen(
         }
 
         Button(onClick = {//check
-            listOfEveryTask.get(viewModel.id).complete = "X"
+            //listOfEveryTask.get(viewModel.id).complete = "X"
+            pushTask("complete", "X")
             if(listOfEveryTask.get(viewModel.id).unitNum == listOfEveryTask.get(viewModel.id+1).unitNum){
                 viewModel.incrementId()
                 viewModel.decrementId()
@@ -226,7 +224,8 @@ fun HomeScreen(
         }
 
         Button(onClick = {//uncheck
-            listOfEveryTask.get(viewModel.id).complete = "  "
+            //listOfEveryTask.get(viewModel.id).complete = "  "
+            pushTask("complete", "  ")
             if(listOfEveryTask.get(viewModel.id).unitNum == listOfEveryTask.get(viewModel.id+1).unitNum){
                 viewModel.incrementId()
                 viewModel.decrementId()
