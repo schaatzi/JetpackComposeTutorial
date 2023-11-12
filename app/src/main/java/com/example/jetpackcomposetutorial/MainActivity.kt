@@ -2,6 +2,7 @@
 package com.example.jetpackcomposetutorial
 
 import android.content.Intent
+import android.graphics.Color.parseColor
 //import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -61,6 +62,9 @@ val listOfEveryTask = mutableListOf<BabyTask>()
 
 var databaseGet = FirebaseDatabase.getInstance().reference
 var database = Firebase.database
+
+val String.color
+    get() = Color(parseColor(this))
 
 class MainActivity : ComponentActivity() {
 

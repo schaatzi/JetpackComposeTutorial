@@ -60,8 +60,8 @@ fun HomeScreen(
     viewModel.incrementId()
     viewModel.decrementId()
 
-
     println("this is the home screen before the first composable. tasksPerUnit: $tasksPerUnit")
+
 
 
 
@@ -70,7 +70,8 @@ fun HomeScreen(
         horizontalAlignment = Alignment.End,
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp)
+            //.background(color = Color(0xFF192655))
+            .padding(20.dp),
     ){
 
         Button(onClick = {//go to all units
@@ -78,7 +79,7 @@ fun HomeScreen(
             navController.navigate(route = Screen.All.route)
         },
             //modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
         ) {
             Text(text = "See all units    >", fontSize = 20.sp)
         }
@@ -88,14 +89,15 @@ fun HomeScreen(
             navController.navigate(route = Screen.Detail.route)
         },
             //modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
         ) {
             Text(text = "See whole list    >", fontSize = 20.sp)
         }
 
         Text(
-            text = "Unit: ${TranslateUnitNumber(listOfEveryTask.get(viewModel.id).unitNum)}  id: ${viewModel.id} / ${listOfEveryTask.count()}",
-            fontSize = 40.sp,
+            text = "Unit: ${TranslateUnitNumber(listOfEveryTask.get(viewModel.id).unitNum)}   id: ${viewModel.id} / ${listOfEveryTask.count()}",
+            fontSize = 35.sp,
+            color = Color(0xFF3876BF),
             modifier = Modifier
                 .padding(15.dp)
                 .align(Alignment.Start)
@@ -117,6 +119,7 @@ fun HomeScreen(
             text = "[ ${listOfEveryTask.get(viewModel.id - 1).complete} ] ${listOfEveryTask.get(viewModel.id -1).notes} ${listOfEveryTask.get(
                 viewModel.id - 1).details}",
             fontSize = 15.sp,
+            color = Color(0xFF3876BF),
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(20.dp),
@@ -129,7 +132,8 @@ fun HomeScreen(
             text = "[ ${listOfEveryTask.get(viewModel.id).complete} ] ${listOfEveryTask.get(viewModel.id).details} ${listOfEveryTask.get(viewModel.id).notes}",
             fontSize = 30.sp,
             modifier = Modifier.align(Alignment.Start),
-            style = LocalTextStyle.current.copy(lineHeight = 50.sp)
+            style = LocalTextStyle.current.copy(lineHeight = 50.sp),
+            color = Color(0xFF3876BF)
         )////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -182,7 +186,7 @@ fun HomeScreen(
             }
         },
             modifier = Modifier.padding(20.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1AA74))
         ) {
             Text(text = "Check + go to next", fontSize = 30.sp)
         }
@@ -201,7 +205,7 @@ fun HomeScreen(
             }
         },
             //modifier = Modifier.padding(20.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1AA74))
         ) {
             Text(text = "N/A + go to next", fontSize = 20.sp)
         }
@@ -218,7 +222,7 @@ fun HomeScreen(
             }
         },
             //modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
         ) {
             Text(text = "Check   [X]", fontSize = 20.sp)
         }
@@ -235,7 +239,7 @@ fun HomeScreen(
             }
         },
             //modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
         ) {
             Text(text = "Uncheck   [ ]", fontSize = 20.sp)
         }
@@ -245,6 +249,7 @@ fun HomeScreen(
                 viewModel.decrementId()
             }
         },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
             //modifier = Modifier.padding(5.dp)
         ) {
             Text(text = "Go to previous item   ^", fontSize = 20.sp)
@@ -260,15 +265,11 @@ fun HomeScreen(
             }
 
         },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
             //modifier = Modifier.padding(5.dp)
         ) {
             Text(text = "Go to next item   v", fontSize = 20.sp)
         }
-
-
-
-
-
 
 
     }
