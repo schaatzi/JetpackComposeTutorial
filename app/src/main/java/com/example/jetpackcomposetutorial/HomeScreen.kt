@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DividerDefaults.color
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -40,6 +42,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.ui.input.ImeAction
 import androidx.ui.input.KeyboardType
+import androidx.ui.text.toUpperCase
+
+var waitForChange = false
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,6 +54,8 @@ fun HomeScreen(
     navController: NavController
 ) {
 
+    //var oldDetails = listOfEveryTask.get(viewModel.id).details
+    // var oldNeedSub
 
     var text by remember {
         mutableStateOf("")
@@ -57,52 +65,59 @@ fun HomeScreen(
 
     val context = LocalContext.current  //used by toast
 
+    var blankNotesIfNull: String? = ""
+
     viewModel.incrementId()
     viewModel.decrementId()
 
-    println("this is the home screen before the first composable. tasksPerUnit: $tasksPerUnit")
+    println("this is the home screen before the first composable block. tasksPerUnit: $tasksPerUnit")
 
+    println("notes to string: ${listOfEveryTask.get(viewModel.id).notes.orEmpty()}")
 
-
-
-    Column (
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.End,
+    Row (
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
             //.background(color = Color(0xFF192655))
             .padding(20.dp),
     ){
 
-        Button(onClick = {//go to all units
+        Text(
+            text = "Unit: ${TranslateUnitNumber(listOfEveryTask.get(viewModel.id).unitNum)}",
+            fontSize = 25.sp,
+            color = Color(0xFF3876BF),
+            modifier = Modifier
+                .padding(10.dp)
+            //.align(Alignment.Start)
+        )
 
-            navController.navigate(route = Screen.All.route)
-        },
-            //modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
+        Button(
+            onClick = {//go to all units
+
+                navController.navigate(route = Screen.All.route)
+            },
+            modifier = Modifier.padding(5.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF3F0CA)),
         ) {
-            Text(text = "See all units    >", fontSize = 20.sp)
+            Text("see all units",
+                fontSize = 15.sp,
+                color = Color(0xFF3876BF))
+            //Text(text = "See all units    >",
+                //fontSize = 10.sp)
         }
 
         Button(onClick = {//go to list
 
             navController.navigate(route = Screen.Detail.route)
         },
-            //modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
+            modifier = Modifier.padding(5.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF3F0CA))
         ) {
-            Text(text = "See whole list    >", fontSize = 20.sp)
+            Text("see list",
+                fontSize = 15.sp,
+                color = Color(0xFF3876BF))
         }
-
-        Text(
-            text = "Unit: ${TranslateUnitNumber(listOfEveryTask.get(viewModel.id).unitNum)}   id: ${viewModel.id} / ${listOfEveryTask.count()}",
-            fontSize = 35.sp,
-            color = Color(0xFF3876BF),
-            modifier = Modifier
-                .padding(15.dp)
-                .align(Alignment.Start)
-        )
-
 
     }
 
@@ -116,31 +131,42 @@ fun HomeScreen(
             .padding(20.dp)
     ){
         Text(//previous task text
-            text = "[ ${listOfEveryTask.get(viewModel.id - 1).complete} ] ${listOfEveryTask.get(viewModel.id -1).notes} ${listOfEveryTask.get(
-                viewModel.id - 1).details}",
+            text = "[ ${pullComplete(-1)} ] ${pullRoom(-1)} ${pullDetails(-1)}} ${literalNullNotesToBlank(-1,-1)}      id: ${viewModel.id} / ${listOfEveryTask.count()}",
             fontSize = 15.sp,
             color = Color(0xFF3876BF),
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(20.dp),
-            style = LocalTextStyle.current.copy(lineHeight = 25.sp)
+            //modifier = Modifier
+                //.align(Alignment.Start)
+                //.padding(20.dp),
+            style = LocalTextStyle.current.copy(lineHeight = 25.sp),
+            //modifier = Modifier.align(Alignment.Start)
+            modifier = Modifier.align(Alignment.Start)
         )
 
-
-
         Text(//current task text//////////////////////////////////////////////////////////
-            text = "[ ${listOfEveryTask.get(viewModel.id).complete} ] ${listOfEveryTask.get(viewModel.id).details} ${listOfEveryTask.get(viewModel.id).notes}",
+            //text = "${listOfEveryTask.get(viewModel.id).details}",
+            text = "[ ${pullComplete(0)} ] ${pullRoom(0)} ${pullDetails(0)} ${literalNullNotesToBlank(0,0)}",
             fontSize = 30.sp,
-            modifier = Modifier.align(Alignment.Start),
             style = LocalTextStyle.current.copy(lineHeight = 50.sp),
-            color = Color(0xFF3876BF)
+            color = Color(0xFF3876BF),
+            modifier = Modifier.align(Alignment.Start)
         )////////////////////////////////////////////////////////////////////////////////////
 
 
         TextField(
+
             value = text,
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.White,
+                unfocusedLabelColor = Color(0xFF3876BF),
+                focusedLabelColor = Color(0xFF3876BF),
+                focusedIndicatorColor = Color(0xFF3876BF),
+                unfocusedIndicatorColor = Color(0xFF3876BF)
+            ),
+            //colors = TextFieldDefaults.textFieldColors(textColor = Color(0xFF3876BF)),
             onValueChange = { newText -> text = newText },
-            label = { Text(text = "add notes (type 'del' to erase)")},
+            label = {Text("add notes to this task")},
+            placeholder = { Text(text = "(type 'del' to erase entry)",
+                color = Color.Gray)},
             keyboardOptions = KeyboardOptions(
                 keyboardType = androidx.compose.ui.text.input.KeyboardType.Email,
                 imeAction = androidx.compose.ui.text.input.ImeAction.Done
@@ -149,14 +175,15 @@ fun HomeScreen(
                 onDone = {
                     if (text != ""){
                         if (text == "del"){
-                            //listOfEveryTask.get(viewModel.id).notes = ""
                             pushTask("notes","")
                             viewModel.incrementId()
                             viewModel.decrementId()
                         } else {
-                            //listOfEveryTask.get(viewModel.id).notes = text.uppercase()
-                            pushTask("notes",text.uppercase())
                             viewModel.incrementId()
+                            databaseGet                     //after going to the next task, set the previous task to the entered text
+                                .child("tasks")
+                                    .child((viewModel.id - 1).toString())           //need to add a listener for this child and all children that do not match the current viewModel.id!!!
+                                        .child("notes").setValue(text.uppercase())
                             viewModel.decrementId()
                             if (listOfEveryTask.get(viewModel.id).unitNum == listOfEveryTask.get(viewModel.id + 1).unitNum
                             ) {
@@ -174,28 +201,38 @@ fun HomeScreen(
 
         Button(onClick = {//check and go to next
             //listOfEveryTask.get(viewModel.id).complete = "X"
-            pushTask("complete","X")
+
             if(listOfEveryTask.get(viewModel.id).unitNum == listOfEveryTask.get(viewModel.id+1).unitNum){
                 viewModel.incrementId()
-            }else {
+                databaseGet                     //after going to the next task, set the previous task to complete
+                    .child("tasks")
+                        .child((viewModel.id - 1).toString())           //need to add a listener for this child and all children that do not match the current viewModel.id!!!
+                            .child("complete").setValue("X")
+            }
+
+            else {
                 viewModel.incrementId()
                 viewModel.decrementId()
                 Toast.makeText(context,
                     "no more items!",
                     Toast.LENGTH_SHORT).show()
             }
+
         },
             modifier = Modifier.padding(20.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1AA74))
         ) {
-            Text(text = "Check + go to next", fontSize = 30.sp)
+            Text(text = "[X]  Check + go to next  v", fontSize = 30.sp)
         }
 
         Button(onClick = {//N/A and go to next
             //listOfEveryTask.get(viewModel.id).complete = "N/A"
-            pushTask("complete", "N/A")
             if(listOfEveryTask.get(viewModel.id).unitNum == listOfEveryTask.get(viewModel.id+1).unitNum){
                 viewModel.incrementId()
+                databaseGet                     //after going to the next task, set the previous task to complete
+                    .child("tasks")
+                        .child((viewModel.id - 1).toString())           //need to add a listener for this child and all children that do not match the current viewModel.id!!!
+                            .child("complete").setValue("N/A")
             }else {
                 viewModel.incrementId()
                 viewModel.decrementId()
@@ -216,6 +253,7 @@ fun HomeScreen(
             if(listOfEveryTask.get(viewModel.id).unitNum == listOfEveryTask.get(viewModel.id+1).unitNum){
                 viewModel.incrementId()
                 viewModel.decrementId()
+
             } else {
                 viewModel.decrementId()
                 viewModel.incrementId()

@@ -71,9 +71,9 @@ fun DetailScreen(
                         navController.navigate(route = Screen.Home.route)
                     }
                     .padding(5.dp),
-                text = "[ ${listOfEveryTask.get(i).complete} ] ${listOfEveryTask.get(i).notes} ${listOfEveryTask.get(i).details}",
-                fontSize = 20.sp,
-                style = LocalTextStyle.current.copy(lineHeight = 25.sp)
+                text = "[ ${listOfEveryTask.get(i).complete} ] ${listOfEveryTask.get(i).room} ${literalNullNotesToBlank(0,0)} ${listOfEveryTask.get(i).details}",
+                fontSize = 15.sp,
+                style = LocalTextStyle.current.copy(lineHeight = 30.sp)
 
             )
 
