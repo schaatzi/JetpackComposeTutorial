@@ -2,7 +2,7 @@ package com.example.jetpackcomposetutorial.StartupFunctions
 
 import com.example.jetpackcomposetutorial.databaseGet
 import com.example.jetpackcomposetutorial.listOfEveryTask
-import com.example.jetpackcomposetutorial.waitForChange
+import com.example.jetpackcomposetutorial.Screens.waitForChange
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
