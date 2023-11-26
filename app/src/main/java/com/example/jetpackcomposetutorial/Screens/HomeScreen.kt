@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -41,6 +43,7 @@ import com.example.jetpackcomposetutorial.pullNotes
 import com.example.jetpackcomposetutorial.pullRoom
 import com.example.jetpackcomposetutorial.pushTask
 import com.example.jetpackcomposetutorial.sendMail
+import com.example.jetpackcomposetutorial.viewModel
 
 var waitForChange = false
 
@@ -52,8 +55,6 @@ fun HomeScreen(
     navController: NavController
 ) {
 
-    //var oldDetails = listOfEveryTask.get(viewModel.id).details
-    // var oldNeedSub
 
     var text by remember {
         mutableStateOf("")
@@ -65,60 +66,89 @@ fun HomeScreen(
 
     var blankNotesIfNull: String? = ""
 
+    var bottomButtonsColor = 0xFF3876BF
+    var readOnlyTextColor = bottomButtonsColor
+    var middleButtonsColor = 0xFFE1AA74
+
     com.example.jetpackcomposetutorial.viewModel.incrementId()
     com.example.jetpackcomposetutorial.viewModel.decrementId()
 
-    println("this is the home screen before the first composable block. tasksPerUnit: $tasksPerUnit")
 
-    println("notes to string: ${listOfEveryTask.get(com.example.jetpackcomposetutorial.viewModel.id).notes.orEmpty()}")
 
-    Row (
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.Center,
+    Column (
+        verticalArrangement = Arrangement.Top,
         modifier = Modifier
             .fillMaxSize()
-            //.background(color = Color(0xFF192655))
-            .padding(20.dp),
-    ){
+            .padding(20.dp)
+    ) {
+        Row (
+            verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.Center,
+        ){
+//
+            Text(
+                text = "Unit: ${TranslateUnitNumber(listOfEveryTask.get(viewModel.id).unitNum)}",            fontSize = 25.sp,            color = Color(0xFF3876BF),
+                modifier = Modifier
+                    .padding(10.dp)
+            )
+//
+            Button(
+                onClick = {//go to all units
+                    navController.navigate(route = Screen.All.route)
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(bottomButtonsColor)),
+                modifier = Modifier.padding(5.dp)
 
-        Text(
-            text = "Unit: ${TranslateUnitNumber(listOfEveryTask.get(com.example.jetpackcomposetutorial.viewModel.id).unitNum)}",
-            fontSize = 25.sp,
-            color = Color(0xFF3876BF),
-            modifier = Modifier
-                .padding(10.dp)
-            //.align(Alignment.Start)
+            ) {
+                Text("see all units",
+                    fontSize = 15.sp)
+            }
+//
+            Button(onClick = {//go to list
+                navController.navigate(route = Screen.Detail.route)
+            },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(bottomButtonsColor)),
+                modifier = Modifier.padding(5.dp)
+            ) {
+                Text("see list",
+                    fontSize = 15.sp)
+            }
+
+        }
+/*
+        Text(//task#
+            text = "Task: ${com.example.jetpackcomposetutorial.viewModel.id}", fontSize = 15.sp, color = Color(readOnlyTextColor),
+            //style = LocalTextStyle.current.copy(lineHeight = 25.sp),
+            modifier = Modifier.align(Alignment.Start)
         )
 
-        Button(
-            onClick = {//go to all units
+ */
+        Text(//header
+            text = "Previous task:", fontSize = 20.sp, color = Color(readOnlyTextColor),
+            //style = LocalTextStyle.current.copy(lineHeight = 25.sp),
+            modifier = Modifier.align(Alignment.Start)
+        )
 
-                navController.navigate(route = Screen.All.route)
-            },
-            modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF3F0CA)),
-        ) {
-            Text("see all units",
-                fontSize = 15.sp,
-                color = Color(0xFF3876BF))
-            //Text(text = "See all units    >",
-                //fontSize = 10.sp)
-        }
-
-        Button(onClick = {//go to list
-
-            navController.navigate(route = Screen.Detail.route)
-        },
-            modifier = Modifier.padding(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF3F0CA))
-        ) {
-            Text("see list",
-                fontSize = 15.sp,
-                color = Color(0xFF3876BF))
-        }
+        Text(//previous task text
+            text = "[ ${pullComplete(-1)} ] ${pullRoom(-1)} ${pullDetails(-1)} ${nullToBlank(pullNotes(-1))} ", fontSize = 20.sp, color = Color(readOnlyTextColor),
+            style = LocalTextStyle.current.copy(lineHeight = 25.sp),
+            modifier = Modifier.align(Alignment.Start)
+        )
 
     }
 
+/////////////////////
+
+    Column (
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp)
+    ){
+
+    }
+
+//////////////////////
 
     Column (
         verticalArrangement = Arrangement.Bottom,
@@ -127,39 +157,40 @@ fun HomeScreen(
             .fillMaxSize()
             .padding(20.dp)
     ){
-        Text(//previous task text
-            text = "[ ${pullComplete(-1)} ] ${pullRoom(-1)} ${pullDetails(-1)}} ${nullToBlank(pullNotes(-1))}      id: ${com.example.jetpackcomposetutorial.viewModel.id} / ${listOfEveryTask.count()}",
-            fontSize = 15.sp,
-            color = Color(0xFF3876BF),
-            //modifier = Modifier
-                //.align(Alignment.Start)
-                //.padding(20.dp),
-            style = LocalTextStyle.current.copy(lineHeight = 25.sp),
-            //modifier = Modifier.align(Alignment.Start)
+
+
+        Text(//current task room
+            text = "[ ${pullComplete(0)} ] ${pullRoom(0)}", fontSize = 30.sp, color = Color(readOnlyTextColor),
+            //style = LocalTextStyle.current.copy(lineHeight = 50.sp),
             modifier = Modifier.align(Alignment.Start)
         )
 
-        Text(//current task text//////////////////////////////////////////////////////////
-            //text = "${listOfEveryTask.get(viewModel.id).details}",
-            text = "[ ${pullComplete(0)} ] ${pullRoom(0)} ${pullDetails(0)} ${nullToBlank(pullNotes(0))}",
-            fontSize = 30.sp,
-            style = LocalTextStyle.current.copy(lineHeight = 50.sp),
-            color = Color(0xFF3876BF),
-            modifier = Modifier.align(Alignment.Start)
-        )////////////////////////////////////////////////////////////////////////////////////
-
+        Box(//current task details
+            modifier = Modifier
+            //.fillMaxSize()
+            .padding(10.dp)
+            .height(100.dp)
+        ){
+            Text(
+                text = "${pullDetails(0)} ${nullToBlank(pullNotes(0))}", fontSize = 30.sp, color = Color(readOnlyTextColor),
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .align(Alignment.TopStart)
+                //style = LocalTextStyle.current.copy(lineHeight = 50.sp),
+                //modifier = Modifier.align(Alignment.Start)
+            )
+        }
 
         TextField(
 
             value = text,
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Color.White,
-                unfocusedLabelColor = Color(0xFF3876BF),
-                focusedLabelColor = Color(0xFF3876BF),
-                focusedIndicatorColor = Color(0xFF3876BF),
-                unfocusedIndicatorColor = Color(0xFF3876BF)
+                unfocusedLabelColor = Color(readOnlyTextColor),
+                focusedLabelColor = Color(readOnlyTextColor),
+                focusedIndicatorColor = Color(readOnlyTextColor),
+                unfocusedIndicatorColor = Color(readOnlyTextColor)
             ),
-            //colors = TextFieldDefaults.textFieldColors(textColor = Color(0xFF3876BF)),
             onValueChange = { newText -> text = newText },
             label = {Text("add notes to this task")},
             placeholder = { Text(text = "(type 'del' to erase entry)",
@@ -219,7 +250,7 @@ fun HomeScreen(
 
         },
             modifier = Modifier.padding(20.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1AA74))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(middleButtonsColor))
         ) {
             Text(text = "[X]  Check + go to next ", fontSize = 30.sp)
         }
@@ -242,7 +273,7 @@ fun HomeScreen(
             }
         },
             //modifier = Modifier.padding(20.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1AA74))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(middleButtonsColor))
         ) {
             Text(text = "N/A + go to next", fontSize = 20.sp)
         }
@@ -272,7 +303,7 @@ fun HomeScreen(
                     }
                 },
                     //modifier = Modifier.padding(5.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(bottomButtonsColor))
                 ) {
                     Text(text = "[X]", fontSize = 20.sp)
                 }
@@ -290,7 +321,7 @@ fun HomeScreen(
                     }
                 },
                     //modifier = Modifier.padding(5.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(bottomButtonsColor))
                 ) {
                     Text(text = "[  ]", fontSize = 20.sp)
                 }
@@ -307,7 +338,7 @@ fun HomeScreen(
                         com.example.jetpackcomposetutorial.viewModel.decrementId()
                     }
                 },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(bottomButtonsColor))
                     //modifier = Modifier.padding(5.dp)
                 ) {
                     Text(text = "^", fontSize = 20.sp)
@@ -323,7 +354,7 @@ fun HomeScreen(
                     }
 
                 },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3876BF))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(bottomButtonsColor))
                     //modifier = Modifier.padding(5.dp)
                 ) {
                     Text(text = "v", fontSize = 20.sp)
